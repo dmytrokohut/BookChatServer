@@ -7,12 +7,14 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.1'
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'com.google.protobuf'
 
 group = 'com.dkohut.bookchat'
 version = '0.0.1-SNAPSHOT'
@@ -20,11 +22,67 @@ sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
+
+def grpcVersion = '1.6.1'	// Current version (18.09.2017)
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	
+	compile('org.lognet:grpc-spring-boot-starter:2.1.0')
+	
+	compile "com.google.api.grpc:proto-google-common-protos:0.1.9"
+	compile "io.grpc:grpc-netty:${grpcVersion}"
+	compile "io.grpc:grpc-protobuf:${grpcVersion}"
+	compile "io.grpc:grpc-stub:${grpcVersion}"
+	
+	testCompile "io.grpc:grpc-testing:${grpcVersion}"
+  	testCompile "junit:junit:4.12"
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java/com/dkohut/bookchat/generated'
+		}
+	}
+}
+
+protobuf {
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.3.0'
+	}
+	plugins {
+		grpc {
+			artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+		}
+	}
+	generateProtoTasks {
+		ofSourceSet('main').each { task ->
+			task.builtins {
+				java {
+					outputSubDir = 'java'
+				}
+			}
+			task.plugins  {
+				grpc {
+					outputSubDir = 'java'
+				}
+			}			
+		}
+	}
+	generatedFilesBaseDir = "$projectDir/src/"
+}
+
+task cleanGenerated {
+	doFirst {
+		delete("$projectDir/src/main/java/com/dkohut/bookchat/generated")
+	}
+}
+
+clean.dependsOn cleanGenerated
