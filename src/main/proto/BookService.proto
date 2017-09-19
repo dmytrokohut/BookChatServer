@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-option java_multiple_files=true;
+option java_multiple_files = true;
 
-// Folder where will be conceived all generated files 
+// Folder, that will contain generated files
 package com.dkohut.bookchat.server.common.entity;
 
 // Enum which contain instances for ResponseMessage
@@ -18,32 +18,12 @@ message Book {
 	string genre = 2;
 	string author = 3;
 	string date = 4;
-	float double = 5; 
-}
-
-// Message for creating a class User
-message User {
-	string login = 1;
-	string password = 2;
-	string name = 3;
-	string email = 4;
+	float price = 5; 
 }
 
 // Message from server which consist of info about success of operation
 message ResponseMessage {
 	ResponseEnum response = 1;
-	int32 id = 2;
-}
-
-// This message will be sending to server with info for registration
-message RegistrationMessage {
-	User user = 1;
-}
-
-// Message sent to server with info about user for login
-message LoginMessage {
-	string login = 1;
-	string password = 2;
 }
 
 // Message sent to server with title of book for searching
@@ -52,7 +32,7 @@ message SearchBookMessage {
 }
 
 // Message sent to server for creating a new book-object
-message AddBookMessage {
+message CreateBookMessage {
 	Book book = 1; 
 }
 
@@ -66,34 +46,13 @@ message BookFromServer {
 	Book book = 1;
 }
 
-// New message from client
-message ChatMessage {
-	string name = 1;
-	string message = 2;
-}
-
-// Message which server sent to all members of chat
-message ChatMessageFromServer {
-	string name = 1;
-	string message = 2;
-}
-
-service BookChatServer {
-	// Method for registration new user in system
-	rpc registration(RegistrationMessage) returns (ResponseMessage);
-	
-	// Method for login an existing user
-	rpc login(LoginMessage) returns (ResponseMessage);
-
+service BookService {
 	// Method for adding new book
-	rpc addBook(AddBookMessage) returns (ResponseMessage);
+	rpc createBook(CreateBookMessage) returns (ResponseMessage);
 	
 	// Method for searching existing book
 	rpc searchBook(SearchBookMessage) returns (BookFromServer);
 	
 	// Method for deleting existing book
 	rpc deleteBook(DeleteBookMessage) returns (ResponseMessage);
-	
-	// Method for communication throughout chat
-	rpc chat(ChatMessage) returns (ChatMessageFromServer);
 }
