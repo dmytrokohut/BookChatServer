@@ -48,7 +48,7 @@ dependencies {
 sourceSets {
 	main {
 		java {
-			srcDir 'src/main/java/com/dkohut/bookchat/generated'
+			srcDir 'src/main/java/com/dkohut/bookchat/entity'
 		}
 	}
 }
@@ -79,10 +79,10 @@ protobuf {
 	generatedFilesBaseDir = "$projectDir/src/"
 }
 
-task cleanGenerated {
+task cleanEntity {
 	doFirst {
-		delete("$projectDir/src/main/java/com/dkohut/bookchat/generated")
+		delete("$projectDir/src/main/java/com/dkohut/bookchat/server/common/entity")
 	}
 }
 
-clean.dependsOn cleanGenerated
+clean.dependsOn cleanEntity
