@@ -2,6 +2,12 @@ package com.dkohut.bookchat.server.common.interfaces;
 
 import com.dkohut.bookchat.server.common.entity.Book;
 
+/**
+ * This interface defines a method for work with database
+ * 
+ * @author Dmytro Kohut
+ *
+ */
 public interface IBookDAOService {
 	/**
 	 * This method create new book in database
@@ -19,7 +25,7 @@ public interface IBookDAOService {
 	 * 				  used for searching in database
 	 * @return response - String type data that represent success of transaction
 	 */
-	String select(String title);
+	Book select(String title);
 	
 	
 	/**

@@ -2,6 +2,12 @@ package com.dkohut.bookchat.server.common.interfaces;
 
 import com.dkohut.bookchat.server.common.entity.User;
 
+/**
+ * This interface defines a methods which will be using for work with database
+ * 
+ * @author Dmytro Kohut
+ *
+ */
 public interface IUserDAOService {
 	/**
 	 * This method will be getting user by given login and password

@@ -9,10 +9,11 @@ package com.dkohut.bookchat.server.common.entity;
 
 // Message for creating a class User
 message User {
-	string login = 1;
-	string password = 2;
-	string name = 3;
-	string email = 4;
+	int32 id = 1;
+	string login = 2;
+	string password = 3;
+	string name = 4;
+	string email = 5;
 }
 
 // This message will be sending to server with info for registration

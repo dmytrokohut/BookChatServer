@@ -14,11 +14,12 @@ enum ResponseEnum {
 // Message for creating a class Book which will be used for objects
 // which will be containing info about book
 message Book {
-	string title = 1;
-	string genre = 2;
-	string author = 3;
-	string date = 4;
-	float price = 5; 
+	int32 id = 1;
+	string title = 2;
+	string genre = 3;
+	string author = 4;
+	string publication_date = 5;
+	float price = 6; 
 }
 
 // Message from server which consist of info about success of operation
