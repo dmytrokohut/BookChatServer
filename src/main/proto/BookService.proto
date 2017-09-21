@@ -32,27 +32,17 @@ message SearchBookMessage {
 	string title = 1;
 }
 
-// Message sent to server for creating a new book-object
-message CreateBookMessage {
-	Book book = 1; 
-}
-
 // Message sent to server for deleting book-object
 message DeleteBookMessage {
 	int32 id = 1;
 }
 
-// Message which will be return message with book-object from server
-message BookFromServer {
-	Book book = 1;
-}
-
 service BookService {
 	// Method for adding new book
-	rpc createBook(CreateBookMessage) returns (ResponseMessage);
+	rpc createBook(Book) returns (ResponseMessage);
 	
 	// Method for searching existing book
-	rpc searchBook(SearchBookMessage) returns (BookFromServer);
+	rpc searchBook(SearchBookMessage) returns (Book);
 	
 	// Method for deleting existing book
 	rpc deleteBook(DeleteBookMessage) returns (ResponseMessage);

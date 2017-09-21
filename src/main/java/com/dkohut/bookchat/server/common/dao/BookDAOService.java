@@ -2,6 +2,7 @@ package com.dkohut.bookchat.server.common.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.dkohut.bookchat.server.common.entity.Book;
 import com.dkohut.bookchat.server.common.interfaces.IBookDAOService;
@@ -12,6 +13,7 @@ import com.dkohut.bookchat.server.common.interfaces.IBookDAOService;
  * @author Dmytro Kohut
  *
  */
+@Repository
 public class BookDAOService implements IBookDAOService {
 	
 	@Autowired
@@ -47,7 +49,8 @@ public class BookDAOService implements IBookDAOService {
 	@Override
 	public Book select(String title) {
 		return jdbcTemplate.queryForObject(QUERY_SELECT, (resultSet, rowNum) -> {
-			return Book.newBuilder().setId(resultSet.getInt("id"))
+			return Book.newBuilder()
+					.setId(resultSet.getInt("id"))
 					.setTitle(resultSet.getString("title"))
 					.setGenre(resultSet.getString("genre"))
 					.setAuthor(resultSet.getString("author"))
