@@ -1,20 +1,20 @@
-package com.dkohut.bookchat.server.service;
+package com.dkohut.bookchat.service;
 
 import java.util.LinkedHashSet;
 
 import org.apache.log4j.Logger;
 import org.lognet.springboot.grpc.GRpcService;
 
-import com.dkohut.bookchat.server.common.entity.ChatMessage;
-import com.dkohut.bookchat.server.common.entity.ChatMessageFromServer;
-import com.dkohut.bookchat.server.common.entity.ChatServiceGrpc;
+import com.dkohut.bookchat.common.entity.ChatMessage;
+import com.dkohut.bookchat.common.entity.ChatMessageFromServer;
+import com.dkohut.bookchat.common.entity.ChatServiceGrpc;
 
 import io.grpc.stub.StreamObserver;
 
 /**
  * This service tracking activity related to chat messages
  * 
- * @author dima
+ * @author Dmytro Kohut
  *
  */
 @GRpcService

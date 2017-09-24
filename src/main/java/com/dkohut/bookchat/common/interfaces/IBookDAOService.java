@@ -1,6 +1,7 @@
-package com.dkohut.bookchat.server.common.interfaces;
+package com.dkohut.bookchat.common.interfaces;
 
-import com.dkohut.bookchat.server.common.entity.Book;
+import com.dkohut.bookchat.common.entity.Book;
+import com.dkohut.bookchat.common.entity.ResponseEnum;
 
 /**
  * This interface defines a method for work with database
@@ -16,7 +17,7 @@ public interface IBookDAOService {
 	 * 				 which will be written into database
 	 * @return response - String type data that represent success of transaction
 	 */
-	String create(Book book);
+	ResponseEnum create(Book book);
 	
 	/**
 	 * This method search book in database by given title
@@ -34,5 +35,5 @@ public interface IBookDAOService {
 	 * @param id - Integer type field which represent given id of book
 	 * @return response - String type field that represent success of transaction
 	 */
-	String delete(Integer id);
+	ResponseEnum delete(Integer id);
 }

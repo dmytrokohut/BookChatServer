@@ -1,6 +1,7 @@
-package com.dkohut.bookchat.server.common.interfaces;
+package com.dkohut.bookchat.common.interfaces;
 
-import com.dkohut.bookchat.server.common.entity.User;
+import com.dkohut.bookchat.common.entity.ResponseEnum;
+import com.dkohut.bookchat.common.entity.User;
 
 /**
  * This interface defines a methods which will be using for work with database
@@ -27,5 +28,5 @@ public interface IUserDAOService {
 	 * 				 which will be written into database
 	 * @return response - String type data which represent success of transaction
 	 */
-	String create(User user);
+	ResponseEnum create(User user);
 }

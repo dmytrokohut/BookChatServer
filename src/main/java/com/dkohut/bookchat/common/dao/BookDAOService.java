@@ -1,11 +1,12 @@
-package com.dkohut.bookchat.server.common.dao;
+package com.dkohut.bookchat.common.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.dkohut.bookchat.server.common.entity.Book;
-import com.dkohut.bookchat.server.common.interfaces.IBookDAOService;
+import com.dkohut.bookchat.common.entity.Book;
+import com.dkohut.bookchat.common.entity.ResponseEnum;
+import com.dkohut.bookchat.common.interfaces.IBookDAOService;
 
 /**
  * This class implements method defined in IBookDAOService interface
@@ -33,10 +34,11 @@ public class BookDAOService implements IBookDAOService {
 	 * @return response - String type data that represent success of transaction
 	 */
 	@Override
-	public String create(Book book) {
+	public ResponseEnum create(Book book) {
 		jdbcTemplate.update(QUERY_CREATE, book.getTitle(), book.getGenre(), book.getAuthor(), 
 							book.getPublicationDate(), book.getPrice());
-		return "SUCCESS";
+		
+		return ResponseEnum.SUCCESS;
 	}
 
 	/**
@@ -68,9 +70,10 @@ public class BookDAOService implements IBookDAOService {
 	 * @return response - String type field that represent success of transaction
 	 */
 	@Override
-	public String delete(Integer id) {
+	public ResponseEnum delete(Integer id) {
 		jdbcTemplate.update(QUERY_DELETE, new Object[] {id} );
-		return "SUCCESS";
+		
+		return ResponseEnum.SUCCESS;
 	}
 	
 }

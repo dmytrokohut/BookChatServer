@@ -33,6 +33,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	
+	runtime('mysql:mysql-connector-java')
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.29'
+	
 	compile('org.lognet:grpc-spring-boot-starter:2.1.0')
 	
 	compile "com.google.api.grpc:proto-google-common-protos:0.1.9"
@@ -49,7 +52,7 @@ dependencies {
 sourceSets {
 	main {
 		java {
-			srcDir 'src/main/java/com/dkohut/bookchat/entity'
+			srcDir 'src/main/java/com/dkohut/bookchat/common/entity'
 		}
 	}
 }
@@ -82,7 +85,7 @@ protobuf {
 
 task cleanEntity {
 	doFirst {
-		delete("$projectDir/src/main/java/com/dkohut/bookchat/server/common/entity")
+		delete("$projectDir/src/main/java/com/dkohut/bookchat/common/entity")
 	}
 }
 

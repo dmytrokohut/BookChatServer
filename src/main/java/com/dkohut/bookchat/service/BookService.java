@@ -1,19 +1,19 @@
-package com.dkohut.bookchat.server.service;
+package com.dkohut.bookchat.service;
 
 import org.apache.log4j.Logger;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dkohut.bookchat.server.common.interfaces.IBookDAOService;
+import com.dkohut.bookchat.common.entity.Book;
+import com.dkohut.bookchat.common.entity.BookServiceGrpc;
+import com.dkohut.bookchat.common.entity.DeleteBookMessage;
+import com.dkohut.bookchat.common.entity.ResponseEnum;
+import com.dkohut.bookchat.common.entity.ResponseMessage;
+import com.dkohut.bookchat.common.entity.SearchBookMessage;
+import com.dkohut.bookchat.common.interfaces.IBookDAOService;
 
-import io.grpc.stub.StreamObserver;
-
-import com.dkohut.bookchat.server.common.entity.Book;
-import com.dkohut.bookchat.server.common.entity.BookServiceGrpc;
-import com.dkohut.bookchat.server.common.entity.DeleteBookMessage;
-import com.dkohut.bookchat.server.common.entity.ResponseEnum;
-import com.dkohut.bookchat.server.common.entity.ResponseMessage;
-import com.dkohut.bookchat.server.common.entity.SearchBookMessage;;
+import io.grpc.Status;
+import io.grpc.stub.StreamObserver;;
 
 /**
  * This service control activity related to creating, selecting and deleting of books in system
@@ -37,9 +37,10 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 	 */
 	@Override
 	public void searchBook(SearchBookMessage request, StreamObserver<Book> responseObserver) {
-		Book book = bookDAOService.select(request.getTitle());
 		
-		if(book.getTitle() != null) {
+		try {
+			Book book = bookDAOService.select(request.getTitle());
+		
 			responseObserver.onNext(Book.newBuilder()
 					.setId(book.getId())
 					.setTitle(book.getTitle())
@@ -49,22 +50,15 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 					.setPrice(book.getPrice())
 					.build());
 			
-			LOGGER.info("Book with title=" + request.getTitle() + " was found.");
-		} else {
-			responseObserver.onNext(Book.newBuilder()
-					.setId(0)
-					.setTitle("Not Found")
-					.setGenre(null)
-					.setAuthor(null)
-					.setPublicationDate(null)
-					.setPrice(0)
-					.build());
+			responseObserver.onCompleted();
 			
+			LOGGER.info("Book with title=" + request.getTitle() + " was found.");
+
+		} catch(RuntimeException e) {
+			responseObserver.onError(Status.INTERNAL.asRuntimeException());
 			LOGGER.info("Book with title=" + request.getTitle() + " was not found.");
-		}
+		}	
 		
-		responseObserver.onError(null);
-		responseObserver.onCompleted();
 	}
 	
 	/**
@@ -74,25 +68,24 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 	 * @return responseObserver - String type object that cotain info about success of transaction
 	 */
 	@Override
-	public void createBook(Book book, StreamObserver<ResponseMessage> responseObserver) {
-		String responseDAO = bookDAOService.create(book);
+	public void createBook(Book book, StreamObserver<ResponseMessage> responseObserver) {		
 		
-		if(!responseDAO.isEmpty()) {
-			responseObserver.onNext(ResponseMessage.newBuilder()
-					.setResponse(ResponseEnum.SUCCESS)
-					.build());
+		try {
+			ResponseEnum responseDAO = bookDAOService.create(book);
 			
-			LOGGER.info("Book was created.");
-		} else {
 			responseObserver.onNext(ResponseMessage.newBuilder()
-					.setResponse(ResponseEnum.ERROR)
+					.setResponse(responseDAO)
 					.build());
+				
+				
+			responseObserver.onCompleted();
+				
+			LOGGER.info("Book was created.");					
 			
+		} catch(RuntimeException e) {
+			responseObserver.onError(Status.INTERNAL.asRuntimeException());
 			LOGGER.info("Book creating was failed.");
-		}
-		
-		responseObserver.onError(null);
-		responseObserver.onCompleted();
+		}	
 	}
 	
 	/**
@@ -103,23 +96,22 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 	 */
 	@Override
 	public void deleteBook(DeleteBookMessage request, StreamObserver<ResponseMessage> responseObserver) {
-		String responseDAO = bookDAOService.delete(request.getId());
 		
-		if(!responseDAO.isEmpty()) {
+		
+		try {
+			ResponseEnum responseDAO = bookDAOService.delete(request.getId());
+			
 			responseObserver.onNext(ResponseMessage.newBuilder()
-					.setResponse(ResponseEnum.SUCCESS)
+					.setResponse(responseDAO)
 					.build());
 			
-			LOGGER.info("Book was successfully deleted.");
-		} else {
-			responseObserver.onNext(ResponseMessage.newBuilder()
-					.setResponse(ResponseEnum.ERROR)
-					.build());
+			responseObserver.onCompleted();
 			
+			LOGGER.info("Book was successfully deleted.");			
+			
+		} catch(RuntimeException e) {
+			responseObserver.onError(Status.INTERNAL.asRuntimeException());
 			LOGGER.info("Book deleting was unsuccessful.");
-		}
-		
-		responseObserver.onError(null);
-		responseObserver.onCompleted();
+		}		
 	}
 }

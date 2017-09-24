@@ -1,11 +1,12 @@
-package com.dkohut.bookchat.server.common.dao;
+package com.dkohut.bookchat.common.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.dkohut.bookchat.server.common.interfaces.IUserDAOService;
-import com.dkohut.bookchat.server.common.entity.User;
+import com.dkohut.bookchat.common.entity.ResponseEnum;
+import com.dkohut.bookchat.common.entity.User;
+import com.dkohut.bookchat.common.interfaces.IUserDAOService;
 
 /**
  * This class realizes methods defined in IUserDAOService interface 
@@ -35,7 +36,8 @@ public class UserDAOService implements IUserDAOService {
 	@Override
 	public User select(String login, String password) {
 		return jdbcTemplate.queryForObject(QUERY_SELECT, (resultSet, rowNum) -> {
-			return User.newBuilder().setId(resultSet.getInt("id"))
+			return User.newBuilder()
+					.setId(resultSet.getInt("id"))
 					.setLogin(resultSet.getString("login"))
 					.setPassword(resultSet.getString("password"))
 					.setName(resultSet.getString("name"))
@@ -54,9 +56,10 @@ public class UserDAOService implements IUserDAOService {
 	 * @return response - String type data which represent success of transaction
 	 */
 	@Override
-	public String create(User user) {
+	public ResponseEnum create(User user) {
 		jdbcTemplate.update(QUERY_CREATE, user.getLogin(), user.getPassword(), user.getName(), user.getEmail());
-		return "SUCCESS";
+		
+		return ResponseEnum.SUCCESS;
 	}
 	
 }
