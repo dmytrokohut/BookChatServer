@@ -62,7 +62,8 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 	}
 	
 	/**
-	 * This method get message with object of Book type and give it to the create method in BookDAOService class
+	 * This method get message with object of Book type and give it to the create method in 
+	 * BookDAOService class
 	 * 
 	 * @param book - Book type object that contain info about book which needed to create in database
 	 * @return responseObserver - String type object that cotain info about success of transaction
@@ -114,4 +115,5 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 			LOGGER.info("Book deleting was unsuccessful.");
 		}		
 	}
+	
 }

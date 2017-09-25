@@ -39,7 +39,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 	@Override
 	public void registration(User user, StreamObserver<ResponseMessage> responseObserver) throws NullPointerException {
 		
-		LOGGER.info(responseObserver);
+		LOGGER.info("New request " + responseObserver);
 		
 		try {
 			ResponseEnum responseDAO = userDAOService.create(user);
@@ -48,13 +48,13 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 					.setResponse(responseDAO)
 					.build());
 			
-			LOGGER.info("User was created.");			
+			LOGGER.info("User was created");			
 			
 			responseObserver.onCompleted();	
 			
 		} catch(RuntimeException e) {
 			responseObserver.onError(Status.INTERNAL.asRuntimeException());
-			LOGGER.info("User creation has failed.");
+			LOGGER.info("User creation has failed");
 		}
 		
 			
@@ -62,7 +62,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 	
 	/**
 	 * This method get login and password from client and give it to the select method 
-	 * that return User-object if user with such login and password exists and null if
+	 * that return User-object if user with such login and password exists and exception  if
 	 * such user does't exists
 	 * 
 	 * @param login - String type object that contain login of user
@@ -89,7 +89,7 @@ public class UserService extends UserServiceGrpc.UserServiceImplBase {
 			responseObserver.onError(Status.INTERNAL.asRuntimeException());	
 			LOGGER.info("Access denied for user with login=" + request.getLogin() + 
 					" and password=" + request.getPassword());
-		}				
+		}
 		
 	}
 	
