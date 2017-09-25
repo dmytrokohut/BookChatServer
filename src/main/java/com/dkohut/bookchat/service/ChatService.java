@@ -32,11 +32,11 @@ public class ChatService extends ChatServiceGrpc.ChatServiceImplBase {
 	 *  
 	 *  @return responseObserver - message that contain the same name of sender and the same content 
 	 */
-	@Override
-	public StreamObserver<ChatMessage> chat(StreamObserver<ChatMessageFromServer> responseObserver) {
-		
+	@Override 
+	public StreamObserver<ChatMessage> chat(StreamObserver<ChatMessageFromServer> responseObserver){
+		 
 		observers.add(responseObserver);
-		LOGGER.info("Requested message: " + responseObserver);
+		LOGGER.info("New request: " + responseObserver);
 		
 		return new StreamObserver<ChatMessage>() {
 
@@ -46,20 +46,20 @@ public class ChatService extends ChatServiceGrpc.ChatServiceImplBase {
 			}
 
 			@Override
-			public void onError(Throwable throwable) {
+			public void onError(Throwable t) {
 				observers.remove(responseObserver);
-				
 			}
 
 			@Override
 			public void onNext(ChatMessage chatMessage) {
-				for(StreamObserver<ChatMessageFromServer> observer: observers) {
+				for(StreamObserver<ChatMessageFromServer> observer : observers) {
 					observer.onNext(ChatMessageFromServer.newBuilder()
 							.setName(chatMessage.getName())
 							.setMessage(chatMessage.getMessage())
 							.build());
 				}
-			}			
+			}
+			
 		};
 		
 	}

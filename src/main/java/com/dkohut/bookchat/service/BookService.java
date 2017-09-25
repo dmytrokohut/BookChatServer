@@ -52,11 +52,11 @@ public class BookService extends BookServiceGrpc.BookServiceImplBase {
 			
 			responseObserver.onCompleted();
 			
-			LOGGER.info("Book with title=" + request.getTitle() + " was found.");
+			LOGGER.info("Book with title=\"" + request.getTitle() + "\" was found.");
 
 		} catch(RuntimeException e) {
 			responseObserver.onError(Status.INTERNAL.asRuntimeException());
-			LOGGER.info("Book with title=" + request.getTitle() + " was not found.");
+			LOGGER.info("Book with title=\"" + request.getTitle() + "\" was not found.");
 		}	
 		
 	}
